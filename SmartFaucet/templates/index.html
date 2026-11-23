@@ -1,76 +1,52 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Smart Faucet Monitoring</title>
-  <style>
-    body { font-family: system-ui, sans-serif; background: #0f172a; color: #f8fafc; padding: 24px; margin: 0; }
-    .container { max-width: 680px; margin: auto; background: #1e293b; padding: 24px; border-radius: 16px; }
-    h2 { margin-top: 0; color: #38bdf8; text-align: center; }
-    .status-box { display: flex; justify-content: space-between; align-items: center; background: #0f172a; padding: 16px; border-radius: 12px; margin-bottom: 20px; }
-    .badge { padding: 6px 14px; border-radius: 999px; font-weight: bold; text-transform: uppercase; }
-    .idle { background: #334155; color: #e2e8f0; }
-    .active { background: #16a34a; color: #ffffff; }
-    .anomaly { background: #dc2626; color: #ffffff; }
-    button { background: #eab308; color: #0f172a; border: none; padding: 10px 16px; border-radius: 8px; font-weight: bold; cursor: pointer; }
-    button:disabled { opacity: 0.4; cursor: not-allowed; }
-    table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 14px; }
-    th, td { padding: 10px; border-bottom: 1px solid #334155; text-align: left; }
-    th { color: #94a3b8; }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h2>Dashboard Smart Faucet</h2>
-    <div class="status-box">
-      <div>Status Sistem: <span id="stateBadge" class="badge idle">IDLE</span></div>
-      <button id="btnResolve" onclick="resolveAnomaly()" disabled>Selesaikan Anomali</button>
+{% extends 'base.html' %}
+
+{% block subtitle %}<p class="muted">Pantau kondisi perangkat secara langsung (diperbarui tiap 2 detik).</p>{% endblock %}
+
+{% block content %}
+<section class="card status-card status-aktif" id="pumpStatusCard" aria-live="polite">
+  <div class="card-heading">
+    <div>
+      <h2>Status Waterpump</h2>
+      <p class="muted" id="pumpStatusDetail">Memuat status...</p>
     </div>
-    <h3>Riwayat Penggunaan Terbaru</h3>
-    <table>
-      <thead>
-        <tr>
-          <th>Waktu</th>
-          <th>Durasi (Detik)</th>
-          <th>Keterangan</th>
-        </tr>
-      </thead>
-      <tbody id="logTable"></tbody>
-    </table>
+    <span class="status-label" id="pumpStatusText">Memuat...</span>
   </div>
 
-  <script>
-    function loadData() {
-      fetch('/api/data')
-        .then(res => res.json())
-        .then(data => {
-          const badge = document.getElementById('stateBadge');
-          const btn = document.getElementById('btnResolve');
-          badge.textContent = data.state;
-          badge.className = 'badge ' + data.state;
-          btn.disabled = (data.state !== 'anomaly');
+  <div class="indicator-group" aria-label="Indikator status waterpump">
+    <div class="indicator" id="bubbleAktif"><span class="bubble blue"></span><span>Aktif</span></div>
+    <div class="indicator" id="bubbleTidakAktif"><span class="bubble gray"></span><span>Tidak aktif</span></div>
+    <div class="indicator" id="bubbleDigunakan"><span class="bubble green"></span><span>Sedang digunakan</span></div>
+    <div class="indicator" id="bubbleAnomali"><span class="bubble red"></span><span>Anomali</span></div>
+  </div>
 
-          const tbody = document.getElementById('logTable');
-          tbody.innerHTML = '';
-          (data.logs || []).forEach(log => {
-            tbody.innerHTML += `<tr>
-              <td>${log.timestamp || '-'}</td>
-              <td>${log.duration} dtk</td>
-              <td>${log.status_type}</td>
-            </tr>`;
-          });
-        });
-    }
+  <button type="button" class="btn btn-resolve" id="btnResolve" hidden>🔧 Tandai Sudah Diperbaiki</button>
+</section>
 
-    function resolveAnomaly() {
-      fetch('/api/resolve-anomaly', { method: 'POST' })
-        .then(res => res.json())
-        .then(() => loadData());
-    }
+<section class="mini-status-grid">
+  <div class="card mini-card" id="buzzerCard">
+    <span class="mini-title">Buzzer</span>
+    <strong id="buzzerStatus">Memuat...</strong>
+  </div>
+  <div class="card mini-card" id="ledCard">
+    <span class="mini-title">LED</span>
+    <strong id="ledStatus">Memuat...</strong>
+  </div>
+</section>
 
-    setInterval(loadData, 1500);
-    loadData();
-  </script>
-</body>
-</html>
+<section class="card">
+  <div class="card-heading">
+    <h2>Riwayat Penggunaan Terbaru</h2>
+    <a href="{{ url_for('riwayat') }}" class="text-link">Lihat semua →</a>
+  </div>
+  <div class="table-responsive">
+    <table>
+      <thead>
+        <tr><th>ID</th><th>Waktu</th><th>Durasi</th><th>Keterangan</th></tr>
+      </thead>
+      <tbody id="dashboardLogBody">
+        <tr><td colspan="4" class="muted">Memuat data...</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

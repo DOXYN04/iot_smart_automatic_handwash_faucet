@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block subtitle %}<p class="muted">Riwayat penggunaan dan catatan perubahan pengaturan.</p>{% endblock %}
+
+{% block content %}
+<section class="card">
+  <div class="card-heading">
+    <h2>Data Riwayat</h2>
+    <div class="filter-group">
+      <label for="historyFilter" class="muted">Keterangan:</label>
+      <select id="historyFilter">
+        <option value="all">Semua</option>
+        <option value="normal">Normal</option>
+        <option value="anomali">Anomali</option>
+        <option value="diperbaiki">Diperbaiki</option>
+        <option value="pengaturan">Pengaturan</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="table-responsive">
+    <table>
+      <thead>
+        <tr><th>ID</th><th>Waktu</th><th>Durasi</th><th>Keterangan</th></tr>
+      </thead>
+      <tbody id="historyTableBody">
+        <tr><td colspan="4" class="muted">Memuat data...</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="pagination" id="pagination">
+    <button type="button" class="btn btn-secondary" id="prevPage">← Sebelumnya</button>
+    <span class="muted" id="pageInfo">-</span>
+    <button type="button" class="btn btn-secondary" id="nextPage">Berikutnya →</button>
+  </div>
+</section>
+{% endblock %}

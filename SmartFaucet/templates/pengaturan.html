@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block subtitle %}<p class="muted">Atur komponen dan batas deteksi anomali. ESP akan mengikuti pengaturan ini.</p>{% endblock %}
+
+{% block content %}
+<form id="settingsForm" novalidate>
+  <section class="card">
+    <h2>Komponen</h2>
+    <div class="toggle-row">
+      <div>
+        <strong>Buzzer</strong>
+        <p class="muted">Berbunyi saat sistem mendeteksi anomali.</p>
+      </div>
+      <label class="switch">
+        <input type="checkbox" id="toggleBuzzer" checked>
+        <span class="switch-track" aria-hidden="true"></span>
+        <span class="sr-only">Aktifkan Buzzer</span>
+      </label>
+    </div>
+
+    <div class="toggle-row">
+      <div>
+        <strong>LED</strong>
+        <p class="muted">Menyala sebagai indikator kondisi perangkat.</p>
+      </div>
+      <label class="switch">
+        <input type="checkbox" id="toggleLed" checked>
+        <span class="switch-track" aria-hidden="true"></span>
+        <span class="sr-only">Aktifkan LED</span>
+      </label>
+    </div>
+
+    <div class="toggle-row">
+      <div>
+        <strong>Waterpump</strong>
+        <p class="muted">Mematikan pompa akan menghentikan aliran air walaupun sensor mendeteksi tangan.</p>
+      </div>
+      <label class="switch">
+        <input type="checkbox" id="togglePump" checked>
+        <span class="switch-track" aria-hidden="true"></span>
+        <span class="sr-only">Aktifkan Waterpump</span>
+      </label>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Logika Anomali</h2>
+    <div class="form-field">
+      <label for="anomalyThreshold">Batas durasi penggunaan nonstop sebelum dianggap anomali (detik)</label>
+      <input type="number" id="anomalyThreshold" min="5" max="600" step="1" value="{{ default_threshold }}" required>
+      <small class="muted">Nilai antara 5 dan 600 detik. Default mengikuti nilai yang dipakai firmware (jika tidak diketahui: 30 detik).</small>
+      <p class="field-error" id="thresholdError" hidden></p>
+    </div>
+  </section>
+
+  <div class="form-actions">
+    <button type="submit" class="btn btn-primary" id="btnSaveSettings">Simpan Pengaturan</button>
+    <span class="save-message" id="settingsMessage" role="status" aria-live="polite"></span>
+  </div>
+</form>
+{% endblock %}
