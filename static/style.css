@@ -1,0 +1,115 @@
+:root {
+    --bg-dark: #0f172a;
+    --card-dark: #1e293b;
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 20px;
+}
+
+.container { max-width: 900px; margin: auto; }
+header { text-align: center; margin-bottom: 30px; }
+header p { color: var(--text-muted); }
+
+/* Status Panel */
+.status-panel {
+    background: var(--card-dark);
+    padding: 30px;
+    border-radius: 12px;
+    text-align: center;
+    margin-bottom: 30px;
+    border: 1px solid #334155;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+}
+
+.indicator-group {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+.indicator {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+/* Bubbles */
+.bubble {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+/* Warna Aktif */
+.blue.active { background: #3b82f6; box-shadow: 0 0 20px #3b82f6; }
+.green.active { background: #10b981; box-shadow: 0 0 20px #10b981; }
+.red.active { background: #ef4444; box-shadow: 0 0 25px #ef4444; animation: pulse 1s infinite; }
+
+/* Warna Mati (Dim) */
+.dim { background: #334155; box-shadow: none; opacity: 0.3; }
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+    70% { box-shadow: 0 0 0 20px rgba(239, 68, 68, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+}
+
+/* Table */
+.log-section {
+    background: var(--card-dark);
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid #334155;
+}
+
+table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+th, td { padding: 12px; text-align: left; border-bottom: 1px solid #334155; }
+th { color: var(--text-muted); }
+tr:hover { background: rgba(255,255,255,0.05); }
+
+.badge-normal { background: #10b981; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; }
+.badge-anomali { background: #ef4444; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; }
+
+/* --- BUTTON PERBAIKAN --- */
+.btn-resolve {
+    background-color: #10b981; /* Warna hijau sukses */
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(16, 185, 129, 0.3);
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-resolve:hover {
+    background-color: #059669;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(16, 185, 129, 0.4);
+}
+
+.btn-resolve:active {
+    transform: translateY(0);
+}
+
+/* Badge tambahan untuk log "Diperbaiki" */
+.badge-fix { 
+    background: #3b82f6; 
+    padding: 4px 8px; 
+    border-radius: 4px; 
+    font-size: 0.8rem; 
+}
